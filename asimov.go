@@ -1,35 +1,77 @@
 package main
 
 import (
-    "fmt"
-	"robot"
-    "github.com/afeldman/goftp"
+    //"fmt"
+	"ftp"
+	"log"
 )
 
+const ASIMOV_VERSION = "0.0.1"
+
 func main() {
-    var err error
-    var ftp *goftp.FTP
+	
+	c := ftp.NewConnection("127.0.0.1", "21") 
+ 	c.Connect() 
+	defer c.Quit()
+	files, err := c.NameList() 
+ 	if err != nil { 
+ 		log.Println("error getting list of files") 
+ 		return 
+ 	} 
+ 
+ 	c.Type("I") 
 
-    // For debug messages: goftp.ConnectDbg("ftp.server.com:21")
-    if ftp, err = goftp.Connect("127.0.0.1:21"); err != nil {
-        panic(err)
-    }
+	var errorList []error 
+ 	for _, file := range files { 
+ 			log.Printf("Downloading %s", file) 
+ 			err := c.Download(file, "all/") 
+			if err != nil { 
+ 				errorList = append(errorList, err) 
+ 			} 
 
-    defer ftp.Close()
-    fmt.Println("Successfully connected to", ftp)
+ 	} 
 
-    var curpath string
-    if curpath, err = ftp.Pwd(); err != nil {
-        panic(err)
-    }
+	if len(errorList) > 0 { 
+ 		log.Printf("There were %d errors.\n", len(errorList)) 
+ 		for _, err := range errorList { 
+ 			log.Println(err) 
+ 		} 
+ 	} 
 
-    fmt.Printf("Current path: %s", curpath)
+	
+	// robots := robot.GetRobotList()
+	// robots.fp = "test"
 
-    // Get directory listing
-    var files []string
-    if files, err = ftp.List(""); err != nil {
-        panic(err)
-    }
-    fmt.Println("\nDirectory listing:\n", files)
+    // app := cli.NewApp() 
+ 	// app.Name = "BackupTool" 
+ 	// app.Usage = "Easy FANUC Backup" 
+ 	// app.Version = ASIMOV_VERSION 
+ 	// app.Author = "Anton Feldmann" 
+ 	// app.Email = "anton.feldmann@fanuc.eu" 
+ 	// app.Commands = []cli.Command{ 
+		// { 
+ 			// Name:      "add", 
+ 			// ShortName: "a", 
+ 			// Usage:     "add a robot", 
+ 			// Action: func(c *cli.Context) { 
+ 			// },
+		// },
+		// { 
+ 			// Name:      "backup", 
+ 			// ShortName: "b", 
+ 			// Usage:     "Backup the robotfiles", 
+ 			// Action: func(c *cli.Context) {
+				// Backup("all")
+ 			// },
+		// },
+ 		// { 
+ 			// Name:      "remove", 
+ 			// ShortName: "r", 
+ 			// Usage:     "remove a robot", 
+ 			// Action: func(c *cli.Context) { 
 
+ 			// }, 
+ 		// },
+	// }
+	// app.Run(os.Args) 
 }

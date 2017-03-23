@@ -1,21 +1,83 @@
 package main
 
 import (
-	"fmt"
 	"bufio"
+	"fmt"
 	"os"
-	"github.com/afeldman/cli"
 	"robot"
 	"strings"
-	"ping"
 	"time"
 	"sync"
+	"log"
+	
+	"path/filepath"
+	"encoding/json"
+	"io/ioutil"
+	
+	"github.com/afeldman/cli"
 )
+
+const FILE_PATH = "backup.conf"
 
 const ASIMOV_VERSION = "0.0.1"
 const ASIMOV_NAME = "ASIMOV"
 
-var destination string
+
+type BackupConf struct{
+	Destination string
+	Version		string
+	Robots		robot.RobotList
+}
+
+func Init() *BackupConf{
+	var bak BackupConf
+	
+	data, err := ioutil.ReadFile(FILE_PATH)
+	
+	if os.IsNotExist(err) {
+		f, err := os.Create(FILE_PATH)
+		check(err)
+		fmt.Println("%s config file created.",FILE_PATH)
+		f.Close()
+		
+		reader := bufio.NewReader(os.Stdin)		
+		fmt.Println("Where should backups be stored?")
+		dest, err := reader.ReadString('\n')
+		check(err)
+		dest = strings.TrimSpace(dest)
+		
+		bak.Destination = dest
+		bak.Version = ASIMOV_VERSION
+		bak.Save()		
+	} else {
+		json.Unmarshal([]byte(data), &bak)
+	}
+	
+	return &bak
+
+}
+
+func (r *BackupConf) Save(){
+
+ 	b, err := json.Marshal(r)
+ 	check(err)
+ 	err = ioutil.WriteFile(FILE_PATH, b, 0644)
+ 	check(err)
+ 	fmt.Println("Project saved.")
+}
+
+func (r *BackupConf) Load(){
+	data, err := ioutil.ReadFile(FILE_PATH)
+
+	if os.IsNotExist(err) {
+		f, err := os.Create(FILE_PATH)
+		check(err)
+ 		fmt.Println("backupfile created.")
+ 		f.Close()
+	} else {
+		json.Unmarshal([]byte(data), &r)
+	}
+}
 
 func check(e error) {
 	if e != nil {
@@ -23,7 +85,7 @@ func check(e error) {
 	}
 }
 
-func addRobot(r *robot.RobotList){
+func (bak *BackupConf)addRobot(){
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Please provide a name for the robot (e.g. R1):")
 	name, err := reader.ReadString('\n')
@@ -35,23 +97,19 @@ func addRobot(r *robot.RobotList){
 	check(err)
 	ip = strings.TrimSpace(ip)
 
-	if ping.Ping(ip,5) {
-		robot := robot.Robot{name,ip}
-		r.AddRobot(robot)
+	robot := robot.Robot{name,ip}
+	bak.Robots.AddRobot(robot)
 
-		r.Save()
-	}else{
-		return
-	}
+	bak.Save()
 }
 
-func removeRobot(r *robot.RobotList){
-	if len(r.Robots) <= 0 {
+func (bak *BackupConf)removeRobot(){
+	if len(bak.Robots.Robots) <= 0 {
 		fmt.Println("There is not Robot to Remove.")
 		return
 	}
 
-	for id, robot := range r.Robots {
+	for id, robot := range bak.Robots.Robots {
 		fmt.Printf("%d. %s %s\n", id+1, robot.Name, robot.Host)
 	}
 
@@ -61,16 +119,17 @@ func removeRobot(r *robot.RobotList){
 	_, err := fmt.Scanf("%d", &id)
 
 	check(err)
-	if r.RemoveRobot(id) != nil {
-		r.Save()
+	if bak.Robots.RemoveRobot(id) != nil {
+		bak.Save()
 	} else {
+		fmt.Println("\nWhich robot do you want to remove?")
 		return
 	}
 }
 
-func Backup(filter func(string) bool, name string, r *robot.RobotList){
-	if len(r.Robots) <= 0 {
-		fmt.Println("Your project does not have any robots. Please run `BackupTool add` to add one.")
+func (bak *BackupConf)Backup(filter func(string) bool, name string){
+	if len(bak.Robots.Robots) <= 0 {
+		fmt.Println("There is no robot to connect to")
 		return
 	}
 
@@ -78,21 +137,22 @@ func Backup(filter func(string) bool, name string, r *robot.RobotList){
 
 	fmt.Println("Backing up project...")
 
-	dest := destination + "/" + fmt.Sprintf("%d-%02d-%02dT%02d-%02d-%02d_%s", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second(), name)
+	dest := bak.Destination + "/" + fmt.Sprintf("%d-%02d-%02dT%02d-%02d-%02d_%s", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second(), name)
 
 	var wg sync.WaitGroup
-	for _, rob := range r.Robots {
+	for _, rob := range bak.Robots.Robots {
+		log.Println("Backed up robot %s", rob.Name)
 		wg.Add(1)
 		go rob.Backup(filter, dest, &wg)
 	}
 	wg.Wait()
-	fmt.Printf("Backed up all robots in %v", time.Since(t))
+	log.Println("Backed up all robots in %v", time.Since(t))
 }
 
 func main() {
 
-	r := robot.RobotList{}
-
+	bak := Init()
+	
 	app := cli.NewApp()
  	app.Name = ASIMOV_NAME
  	app.Usage = "Easy FANUC Backup"
@@ -105,7 +165,7 @@ func main() {
  			ShortName: "a",
  			Usage:     "add a robot",
  			Action: func(c *cli.Context) {
-				addRobot(&r)
+				bak.addRobot()
 			},
 		},
 		{
@@ -117,7 +177,63 @@ func main() {
 					Name:  "all",
 					Usage: "*.*",
 					Action: func(c *cli.Context) {
-						Backup(func(filename string) bool { return true }, "all", &r)
+						bak.Backup(func(filename string) bool { return true }, "all")
+					},
+				},
+				{
+					Name:  "bin",
+					Usage: "*.zip, *.sv, *.tp, *.vr",
+					Action: func(c *cli.Context) {
+						bak.Backup(func(filename string) bool {
+							switch filepath.Ext(filename) {
+							case ".zip", ".sv", ".tp", ".vr":
+								return true
+							}
+							return false
+						}, "bin")
+					},
+				},
+				{
+					Name:  "app",
+					Usage: "*.tp, numreg.vr, posreg.vr",
+					Action: func(c *cli.Context) {
+						bak.Backup(func(filename string) bool {
+							switch filepath.Ext(filename) {
+							case ".tp":
+								return true
+							}
+							switch filename {
+							case "numreg.vr", "posreg.vr":
+								return true
+							}
+							return false
+						}, "app")
+					},
+				},
+				{
+					Name:  "vision",
+					Usage: "*.vd, *.vda, *.zip",
+					Action: func(c *cli.Context) {
+						bak.Backup(func(filename string) bool {
+							switch filepath.Ext(filename) {
+							case ".vd", ".vda", ".zip":
+								return true
+							}
+							return false
+						}, "vision")
+					},
+				},
+				{
+					Name:  "ascii",
+					Usage: "*.ls, *.va, *.dat, *.dg, *.xml",
+					Action: func(c *cli.Context) {
+						bak.Backup(func(filename string) bool {
+							switch filepath.Ext(filename) {
+							case ".ls", ".va", ".dat", ".dg", ".xml":
+								return true
+							}
+							return false
+						}, "ascii")
 					},
 				},
 			},
@@ -127,7 +243,7 @@ func main() {
  			ShortName: "r",
  			Usage:     "remove a robot",
  			Action: func(c *cli.Context) {
-				removeRobot(&r)
+				bak.removeRobot()
  			},
  		},
 	}

@@ -10,6 +10,9 @@ import (
 	"sync"
 	"log"
 	
+	"compressor"
+	"sha1"
+	
 	"path/filepath"
 	"encoding/json"
 	"io/ioutil"
@@ -136,8 +139,9 @@ func (bak *BackupConf)Backup(filter func(string) bool, name string){
 	t := time.Now()
 
 	fmt.Println("Backing up project...")
-
-	dest := bak.Destination + "/" + fmt.Sprintf("%d-%02d-%02dT%02d-%02d-%02d_%s", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second(), name)
+	
+	bak_dir := fmt.Sprintf("%d-%02d-%02dT%02d-%02d-%02d_%s", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second(), name)
+	dest := bak.Destination + "/" + bak_dir
 
 	var wg sync.WaitGroup
 	for _, rob := range bak.Robots.Robots {
@@ -147,6 +151,19 @@ func (bak *BackupConf)Backup(filter func(string) bool, name string){
 	}
 	wg.Wait()
 	log.Println("Backed up all robots in %v", time.Since(t))
+	
+	//compress
+	var hash2 sha1.FileHash
+	var tmp_str string
+	tarpath := compress.TarIt(dest,bak_dir)
+	hash2.Hash(tarpath)
+	for _, node := range hash2.Nodes {
+		tmp_str = fmt.Sprintf("%s\t%x\n", node.Path, node.Hash)
+	}
+	compress.GzipIt(tarpath,tarpath,tmp_str)
+	
+	err := os.RemoveAll(dest)
+	check(err)
 }
 
 func main() {

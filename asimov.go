@@ -27,6 +27,7 @@ const ASIMOV_NAME = "ASIMOV"
 
 
 type BackupConf struct{
+	bachupfile	string
 	Destination string
 	Version		string
 	Robots		robot.RobotList
@@ -144,13 +145,14 @@ func (bak *BackupConf)Backup(filter func(string) bool, name string){
 	dest := bak.Destination + "/" + bak_dir
 
 	var wg sync.WaitGroup
+	robots_in_project := len(bak.Robots.Robots)
+	log.Println("Roboters in Project %d",robots_in_project)
 	for _, rob := range bak.Robots.Robots {
-		log.Println("Backed up robot %s", rob.Name)
 		wg.Add(1)
 		go rob.Backup(filter, dest, &wg)
 	}
 	wg.Wait()
-	log.Println("Backed up all robots in %v", time.Since(t))
+	log.Println("Backed up all robots in %d", time.Since(t))
 	
 	//compress
 	var hash2 sha1.FileHash

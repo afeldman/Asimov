@@ -147,7 +147,7 @@ func (bak *BackupConf)Backup(filter func(string) bool, name string){
 	for _, rob := range bak.Robots.Robots {
 		log.Println("Backed up robot %s", rob.Name)
 		wg.Add(1)
-		rob.Backup(filter, dest, &wg)
+		go rob.Backup(filter, dest, &wg)
 	}
 	wg.Wait()
 	log.Println("Backed up all robots in %v", time.Since(t))

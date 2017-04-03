@@ -90,12 +90,12 @@ func check(e error) {
 
 func (bak *BackupConf)addRobot(){
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Please provide a name for the robot (e.g. R1):")
+	fmt.Println("Please provide a name for the robot (e.g. E-Number):")
 	name, err := reader.ReadString('\n')
 	check(err)
 	name = strings.TrimSpace(name)
 
-	fmt.Printf("What is %s's IP address?\n", name)
+	fmt.Printf("What is %s's FTP-IP address?\n", name)
 	ip, err := reader.ReadString('\n')
 	check(err)
 	ip = strings.TrimSpace(ip)

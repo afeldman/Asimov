@@ -16,8 +16,8 @@ import (
 	"path/filepath"
 	"encoding/json"
 	"io/ioutil"
-	
-	"github.com/afeldman/cli"
+	"cli"
+	//"github.com/afeldman/cli"
 )
 
 const FILE_PATH = "backup.conf"

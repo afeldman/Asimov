@@ -1,7 +1,0 @@
-package cmd
-
-const FILE_PATH = "backup.yaml"
-
-const ASIMOV_VERSION = "0.0.2"
-const ASIMOV_NAME = "ASIMOV"
-

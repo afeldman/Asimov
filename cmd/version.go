@@ -9,7 +9,7 @@ import (
 
 const ASIMOV_VERSION = "0.1.0"
 
-var versionCmd = &cobra.Command{
+var version = &cobra.Command{
     Use:   "version",
     Short: "print version number of Asimov",
     Long:  `asimove has different software versions. to specify
@@ -20,5 +20,5 @@ var versionCmd = &cobra.Command{
 }
 
 func init() {
-     Asimov.AddCommand(versionCmd)
+     bfg.Version = ASIMOV_VERSION
 }

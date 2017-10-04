@@ -8,13 +8,13 @@ import (
 
        "github.com/spf13/cobra"
        "github.com/spf13/viper"
-)
 
-const ASIMOV_NAME = "asimov"
+  //     "robot"
+)
 
 var (
     Asimov = &cobra.Command{
-    	   Use:   ASIMOV_NAME,
+    	   Use:   "asimov",
     	   Short: "Asimov is a backup tool for Robots using FTP.",
     	   Long:  `A fast and flexible backup tool for robot FTP Server.
     	      	   Each Robot using FTP can be backuped.`,
@@ -26,10 +26,10 @@ var (
 func init() {
      cobra.OnInitialize(initConfig)
 
-     Asimov.PersistentFlags().StringVar(&confFile,"config","${HOME}/.config/asimov/asimov.config.yml","config file")
+     Asimov.PersistentFlags().StringVar(&confFile,"config","$HOME/.config/asimov/asimov.yaml","config file")
 
-     Asimov.AddCommand(versionCmd)
-
+     Asimov.AddCommand(version)
+     Asimov.AddCommand(add)
 }
 
 func Execute() {
@@ -46,7 +46,7 @@ func initConfig() {
        }
 
        viper.AddConfigPath(path.Join(home,".config","asimov"))
-       viper.SetConfigName("asimov.conf")
+       viper.SetConfigName("asimov")
      }
 
      viper.AutomaticEnv()
@@ -54,4 +54,7 @@ func initConfig() {
      if err := viper.ReadInConfig(); err != nil {
      	log.Println(err)
      }
+
+//     allSettings := viper.AllSettings()
+//     robots := make([]robot.Robot,0,len(allSettings))
 }

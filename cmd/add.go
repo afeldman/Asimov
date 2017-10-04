@@ -29,11 +29,8 @@ var (
 		    }
 
 		    bfg.AddRobotByName(name,ip)
+		    bfg.save(bfg.Config_Path)
     	   },
      }
 
 )
-
-func init() {
-     
-}

@@ -22,14 +22,6 @@ func main() {
  	app.Email = "anton.feldmann@fanuc.eu"
 	app.Commands = []cli.Command{
 		{
- 			Name:      "add",
- 			ShortName: "a",
- 			Usage:     "add a robot",
- 			Action: func(c *cli.Context) {
-				bak.addRobot()
-			},
-		},
-		{
  			Name:      "backup",
  			ShortName: "b",
  			Usage:     "Backup the robotfiles",

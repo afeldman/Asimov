@@ -1,6 +1,7 @@
 package cmd
 
 import (
+       "fmt"
        "log"
        "path"
 
@@ -26,7 +27,7 @@ var (
 func init() {
      cobra.OnInitialize(initConfig)
 
-     Asimov.PersistentFlags().StringVar(&confFile,"config","$HOME/.config/asimov/asimov.yaml","config file")
+     Asimov.PersistentFlags().StringVar(&confFile,"config","","config file (default $HOME/.config/asimov/asimov.yaml)")
 
      Asimov.AddCommand(version)
      Asimov.AddCommand(add)
@@ -38,12 +39,15 @@ func Execute() {
 
 func initConfig() {
      if confFile != "" {
+     	bfg.Config_Path = confFile
      	viper.SetConfigFile(confFile)
      } else {
        home, err := homedir.Dir()
        if err != nil {
        	  log.Fatal(err)
        }
+
+       bfg.Config_Path = path.Join(home,".config","asimov","asimov.yaml")
 
        viper.AddConfigPath(path.Join(home,".config","asimov"))
        viper.SetConfigName("asimov")
@@ -53,8 +57,15 @@ func initConfig() {
 
      if err := viper.ReadInConfig(); err != nil {
      	log.Println(err)
+     } else {
+        if err := viper.Unmarshal(&bfg); err != nil {
+	   log.Fatal("unable to decode into the Backup Structure, %v", err)
+	}
      }
 
-//     allSettings := viper.AllSettings()
-//     robots := make([]robot.Robot,0,len(allSettings))
+     allSettings := viper.AllSettings()
+     for _, setting := range allSettings {
+     	 fmt.Println(setting)
+     }
+
 }

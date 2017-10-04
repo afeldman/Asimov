@@ -1,7 +1,6 @@
 package cmd
 
 import (
-       "fmt"
        "log"
        "path"
 
@@ -31,6 +30,8 @@ func init() {
 
      Asimov.AddCommand(version)
      Asimov.AddCommand(add)
+     Asimov.AddCommand(remove)
+     Asimov.AddCommand(backup)
 }
 
 func Execute() {

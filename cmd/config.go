@@ -73,6 +73,21 @@ func (r *BackupConfig) GetRobot(name string) *robot.Robot {
      
 }
 
+func (r *BackupConfig) DelRobot(name string) *robot.Robot {
+     if len(r.Robots) <= 0 {
+ 		return nil
+     }
+
+     idx := r.contains(name)
+
+     if  idx == -1{
+     	return nil
+     } 
+
+     return r.RemoveRobot(idx)
+     
+}
+
 func (r *BackupConfig) RemoveRobot(idx int) *robot.Robot{
 	if len(r.Robots) <= 0 {
  		log.Println("No robot in the list use 'asimov add' to add the robot.")

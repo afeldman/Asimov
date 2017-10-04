@@ -13,20 +13,7 @@ func main() {
      }
 
 	/*
-  	app.Author = "Anton Feldmann"
- 	app.Email = "anton.feldmann@fanuc.eu"
- 			Subcommands: []cli.Command{
-				{
-					Name:  "all",
-					Usage: "*.*",
-					Action: func(c *cli.Context) {
-						bak.Backup(func(filename string) bool { return true }, "all")
-					},
-				},
-				{
-					Name:  "bin",
-					Usage: "*.zip, *.sv, *.tp, *.vr",
-					Action: func(c *cli.Context) {
+
 						bak.Backup(func(filename string) bool {
 							switch filepath.Ext(filename) {
 							case ".zip", ".sv", ".tp", ".vr":

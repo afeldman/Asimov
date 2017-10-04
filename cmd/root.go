@@ -27,11 +27,18 @@ func init() {
      cobra.OnInitialize(initConfig)
 
      Asimov.PersistentFlags().StringVar(&confFile,"config","","config file (default $HOME/.config/asimov/asimov.yaml)")
+     Asimov.PersistentFlags().StringP("target","d","Backup Path","Path to the backup Directory")
+
+     viper.BindPFlag("target", Asimov.PersistentFlags().Lookup("target"))
+
+     viper.SetDefault("target","./backup")
+
+     bfg.Destination = viper.GetString("target")
 
      Asimov.AddCommand(version)
      Asimov.AddCommand(add)
      Asimov.AddCommand(remove)
-     Asimov.AddCommand(backup)
+     Asimov.AddCommand(backup_root)
 }
 
 func Execute() {

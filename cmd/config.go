@@ -15,6 +15,7 @@ type BackupConfig struct {
      Config_Path string		`yaml:"asimov_config_path"`
      Version 	 string		`yaml:"asimov_version"`
      Robots  	 []robot.Robot
+     Destination string		`yaml:"asimov_destination"`
 }
 
 var bfg BackupConfig

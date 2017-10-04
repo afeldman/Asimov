@@ -33,4 +33,5 @@ func (r *BackupConfig) Backup(filter func(string) bool, name string){
 
 	log.Println("Backed up all robots in %d", time.Since(t))
 
+	bfg.save(bfg.Config_Path)
 }

@@ -7,7 +7,6 @@ import (
 )
 
 func main() {
-
      if err := cmd.Asimov.Execute(); err != nil {
      	log.Fatal(err)
      }

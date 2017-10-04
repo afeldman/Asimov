@@ -12,19 +12,9 @@ func main() {
      	log.Fatal(err)
      }
 
-	/*bak := Init()
-	
-	app := cli.NewApp()
- 	app.Name = ASIMOV_NAME
- 	app.Usage = "Easy FANUC Backup"
- 	app.Version = ASIMOV_VERSION
- 	app.Author = "Anton Feldmann"
+	/*
+  	app.Author = "Anton Feldmann"
  	app.Email = "anton.feldmann@fanuc.eu"
-	app.Commands = []cli.Command{
-		{
- 			Name:      "backup",
- 			ShortName: "b",
- 			Usage:     "Backup the robotfiles",
  			Subcommands: []cli.Command{
 				{
 					Name:  "all",

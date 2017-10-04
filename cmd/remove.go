@@ -3,7 +3,7 @@ package cmd
 import "github.com/spf13/cobra"
 
 var remove = &cobra.Command{
-    	   Use:   "Remove [name]",
+    	   Use:   "del [name]",
     	   Short: "Remove a Robot from the Robot List",
     	   Long:  `remove a robot from the list of robots. This Robot can not be backuped anymore
     

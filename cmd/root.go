@@ -62,10 +62,4 @@ func initConfig() {
 	   log.Fatal("unable to decode into the Backup Structure, %v", err)
 	}
      }
-
-     allSettings := viper.AllSettings()
-     for _, setting := range allSettings {
-     	 fmt.Println(setting)
-     }
-
 }

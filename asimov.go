@@ -14,45 +14,6 @@ func main() {
 
 	/*
 
-						bak.Backup(func(filename string) bool {
-							switch filepath.Ext(filename) {
-							case ".zip", ".sv", ".tp", ".vr":
-								return true
-							}
-							return false
-						}, "bin")
-					},
-				},
-				{
-					Name:  "app",
-					Usage: "*.tp, numreg.vr, posreg.vr",
-					Action: func(c *cli.Context) {
-						bak.Backup(func(filename string) bool {
-							switch filepath.Ext(filename) {
-							case ".tp":
-								return true
-							}
-							switch filename {
-							case "numreg.vr", "posreg.vr":
-								return true
-							}
-							return false
-						}, "app")
-					},
-				},
-				{
-					Name:  "vision",
-					Usage: "*.vd, *.vda, *.zip",
-					Action: func(c *cli.Context) {
-						bak.Backup(func(filename string) bool {
-							switch filepath.Ext(filename) {
-							case ".vd", ".vda", ".zip":
-								return true
-							}
-							return false
-						}, "vision")
-					},
-				},
 				{
 					Name:  "ascii",
 					Usage: "*.ls, *.va, *.dat, *.dg, *.xml",

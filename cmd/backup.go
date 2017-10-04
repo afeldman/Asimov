@@ -16,4 +16,7 @@ var backup_root = &cobra.Command{
 func init() {
      backup_root.AddCommand(backup_all)
      backup_root.AddCommand(backup_bin)
+     backup_root.AddCommand(backup_app)
+     backup_root.AddCommand(backup_vision)
+
 }

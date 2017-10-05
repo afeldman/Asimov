@@ -25,7 +25,7 @@ make it easy to configurate the list and the destination where to backup and
 which Robot controller to backup.
 
 AUTHOR:
-	Anton Feldmann <anton.feldmann@gmail.com>
+  Anton Feldmann <anton.feldmann@gmail.com>
 
 `,
 }

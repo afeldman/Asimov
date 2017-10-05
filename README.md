@@ -47,8 +47,8 @@ To give you, the user a chose of your will, **asimov** provides different aliase
 does all the same. The different commands for the backup are working totally different :wink:
 
 1. *all* the all command or simply *\** backup all files of the robot available in the standard ftp directory
-2. *app* download all app data
-3. *bin* backup all binary files
+2. *app* download all app data. This includes "\*.tp" files, the "numreg.vr" and the "posreg.vr" file.
+3. *bin* backup all binary files. This includes "\*.zip","\*.sv","\*.tp" and "\*.vr" files
 4. *vison* backup all vision files
 
 # Development

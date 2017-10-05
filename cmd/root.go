@@ -8,16 +8,26 @@ import (
 
        "github.com/spf13/cobra"
        "github.com/spf13/viper"
-
-  //     "robot"
 )
 
 var (
     Asimov = &cobra.Command{
     	   Use:   "asimov",
     	   Short: "Asimov is a backup tool for Robots using FTP.",
-    	   Long:  `A fast and flexible backup tool for robot FTP Server.
-    	      	   Each Robot using FTP can be backuped.`,
+    	   Long:  `
+	   	  ASIMOV a simple FANUC Robot Backup 
+	   	  ==================================
+
+To backup a FANUC Robot the FTP server on the FANUC controller can be used.
+To make it simple to download all the files in an repository this tool helps.
+This tool provides different kind of backups and a configuration setting to
+make it easy to configurate the list and the destination where to backup and
+which Robot controller to backup.
+
+AUTHOR:
+	Anton Feldmann <anton.feldmann@gmail.com> 
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\`,
 }
 
      confFile string

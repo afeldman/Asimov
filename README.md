@@ -49,7 +49,7 @@ does all the same. The different commands for the backup are working totally dif
 1. *all* the all command or simply *\** backup all files of the robot available in the standard ftp directory
 2. *app* download all app data. This includes "\*.tp" files, the "numreg.vr" and the "posreg.vr" file.
 3. *bin* backup all binary files. This includes "\*.zip","\*.sv","\*.tp" and "\*.vr" files
-4. *vison* backup all vision files
+4. *vison* backup all vision files. This includes "\*.vd","\*.vda" and "\*.zip" files
 
 # Development
 To develop this project you are going to need

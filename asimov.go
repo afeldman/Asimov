@@ -1,13 +1,12 @@
 package main
 
 import (
-       "log"
-
 	"asimov/cmd"
+	"log"
 )
 
 func main() {
-     if err := cmd.Asimov.Execute(); err != nil {
-     	log.Fatal(err)
-     }
+	if err := cmd.Asimov.Execute(); err != nil {
+		log.Fatal(err)
+	}
 }

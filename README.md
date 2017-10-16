@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # ASIMOV - Basic FANUC Robot Backup
 
 **asimov** is a basic FTP Backup tool. Using **asimov** different commands are available
@@ -62,7 +61,3 @@ To develop this project you are going to need
 5. [yaml.v2](http://gopkg.in/yaml.v2) `go get gopkg.in/yaml.v2` 
 
 feel free to make changes :nerd:
-=======
-# asimov
-A FTP Backup CLI for FANUC Robot Controller
->>>>>>> gh/master

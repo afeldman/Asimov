@@ -1,7 +1,7 @@
 package main
 
 import (
-	"asimov/cmd"
+	"github.com/afeldman/asimov/cmd"
 	"log"
 )
 

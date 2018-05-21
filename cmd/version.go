@@ -1,24 +1,23 @@
 package cmd
 
 import (
-       "fmt"
-       
-       "github.com/spf13/cobra"
-)
+	"fmt"
 
+	"github.com/spf13/cobra"
+)
 
 const ASIMOV_VERSION = "0.1.0"
 
 var version = &cobra.Command{
-    Use:   "version",
-    Short: "print version number of Asimov",
-    Long:  `asimove has different software versions. to specify
+	Use:   "version",
+	Short: "print version number of Asimov",
+	Long: `asimove has different software versions. to specify
     	   the current use this version command`,
-    Run:   func(cmd *cobra.Command, args []string){
-    	   fmt.Println("Asimov Version is: ", ASIMOV_VERSION)
-    },
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("Asimov Version is: ", ASIMOV_VERSION)
+	},
 }
 
 func init() {
-     bfg.Version = ASIMOV_VERSION
+	bfg.Version = ASIMOV_VERSION
 }

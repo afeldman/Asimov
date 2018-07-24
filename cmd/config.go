@@ -8,7 +8,7 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	"github.com/afeldman/go-robot"
+	"github.com/afeldman/go-util/robot/fanuc"
 )
 
 type BackupConfig struct {

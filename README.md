@@ -6,7 +6,7 @@
 2. *version* the version of the backup tool **asimov**
 3. *del* delete a robot from the list of available robots
 4. *add* add a robot to the list of robots
-5. *backup* this command start the backup process of all robots in the configuration list
+5. *backup* this command start the backup process of all robots in the configuration list 
 
 The configuration list is set to *$HOME/.config/asimov/asimov.yaml*. If you like to use a different configuration file please use the *--config* flag. The *config* flag is available in each subcommand
 

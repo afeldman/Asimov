@@ -54,10 +54,9 @@ does all the same. The different commands for the backup are working totally dif
 # Development
 To develop this project you are going to need
 
-1. robot
-2. [go-homedir](http://github.com/mitchellh/go-homedir) `go get github.com/mitchellh/go-homedir`
-3. [cobra](http://github.com/spf13/cobra) `go get github.com/spf13/cobra`
-4. [viper](http://github.com/spf13/viper) `go get github.com/spf13/viper`
-5. [yaml.v2](http://gopkg.in/yaml.v2) `go get gopkg.in/yaml.v2` 
+1. [go-homedir](http://github.com/mitchellh/go-homedir) `go get github.com/mitchellh/go-homedir`
+2. [cobra](http://github.com/spf13/cobra) `go get github.com/spf13/cobra`
+3. [viper](http://github.com/spf13/viper) `go get github.com/spf13/viper`
+4. [yaml.v2](http://gopkg.in/yaml.v2) `go get gopkg.in/yaml.v2` 
 
 feel free to make changes :nerd:
